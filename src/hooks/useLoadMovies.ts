@@ -1,9 +1,4 @@
-// use frontend ---
-// import { allMoviesData } from '../../assets/data'
-
-import { useEffect, useState } from "react";
-import MovieCard from "./movieCard";
-
+import React, { useEffect, useState } from 'react';
 
 interface Movie {
     id: string;
@@ -16,11 +11,13 @@ interface Movie {
     isTrending: boolean;
   }
 
-const Home = () => {
 
-//  use backend ---
+const useLoadMovies = () => {
+
+
     const [allMoviesData , setAllMoviesData] = useState<Movie[]>([])
-//   const [loading , setLoading] = useState(true)
+    const [loading , setLoading] = useState(true)
+  
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -30,7 +27,7 @@ const Home = () => {
                 }
                 const data = await response.json();
                 setAllMoviesData(data);
-                // setLoading(false)
+                setLoading(false)
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -39,23 +36,8 @@ const Home = () => {
         fetchData();
     }, []);
 
-// if(loading){
-//     return <>
-//     <h3>loading----</h3>
-//     </>
-// }
 
-    console.log(allMoviesData);
-
-    return (
-        <div className='grid grid-cols-4 gap-4 m-12'>
-
-            {
-                allMoviesData.map((movie) => <MovieCard key={movie.id} movie={movie}></MovieCard>)
-            }
-
-        </div>
-    );
+    return [allMoviesData, loading]
 };
 
-export default Home;
+export default useLoadMovies;
